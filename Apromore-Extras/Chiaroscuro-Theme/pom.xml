@@ -5,7 +5,7 @@
 	<artifactId>ui-theme-compact</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<properties>
-		<zk.version>8.6.0.1</zk.version>
+		<zk.version>9.0.0-RC</zk.version>
                 <theme.project>chiaroscuro</theme.project>
                 <theme.name>chiaroscuro_c</theme.name>
                 <theme.display>Chiaroscuro Compact</theme.display>

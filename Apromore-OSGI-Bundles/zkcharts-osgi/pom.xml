@@ -53,7 +53,7 @@
                             org.zkoss.chart.*,
                             web.js.chart.*
                         </Export-Package>
-                        <Fragment-Host>org.apromore.zk-osgi;bundle-version="[8.0,9)"</Fragment-Host>
+                        <Fragment-Host>org.apromore.zk-osgi;bundle-version="[8.0,10)"</Fragment-Host>
                     </instructions>
                 </configuration>
             </plugin>

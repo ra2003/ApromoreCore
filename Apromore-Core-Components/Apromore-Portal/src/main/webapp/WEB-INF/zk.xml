@@ -29,6 +29,11 @@
             <value>false</value>
     </library-property>
 
+    <!-- We can't use CSS flexbox until we have better markup for the Account menu on the main menubar -->
+    <library-property>
+            <name>org.zkoss.zul.css.flex</name>
+            <value>false</value>
+    </library-property>
 
     <!-- Turn on if you want to cache by etag for dynamic resource.
     <library-property>
