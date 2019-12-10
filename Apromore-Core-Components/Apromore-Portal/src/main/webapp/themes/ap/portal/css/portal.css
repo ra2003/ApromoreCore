@@ -306,6 +306,14 @@
   background-color: transparent !important;
 }
 
+.ap-left-layout .z-south-splitter-button .z-icon-ellipsis-h:nth-child(1) {
+  left: 0 !important;
+}
+
+.ap-left-layout .z-south-splitter-button .z-icon-ellipsis-h:nth-child(3) {
+  left: 20px !important;
+}
+
 .ap-about-window .z-window-content {
   padding: 0;
 }
