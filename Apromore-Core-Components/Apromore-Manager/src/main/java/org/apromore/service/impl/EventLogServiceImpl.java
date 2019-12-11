@@ -573,7 +573,7 @@ public class EventLogServiceImpl implements EventLogService {
             Log realLog = logRepo.findUniqueByID(log.getId());
             logRepo.delete(realLog);
             logRepo.deleteProcessLog(realLog);
-            LOGGER.info("Delete XES log " + log.getId() + " from repository.");
+            LOGGER.info("Log with id [" + log.getId() + "] is deleted by " + user.getUsername());
         }
     }
 
