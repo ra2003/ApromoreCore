@@ -111,9 +111,9 @@ public class CacheRepositoryImpl implements CacheRepository {
 
 
     /**
-     * Get net.sf.ehcache.Cache
+     * Get org.ehcache.Cache
      *
-     * @return net.sf.ehcache.Cache
+     * @return org.ehcache.Cache
      */
     public Object getNativeCache() {
         return getCache().getNativeCache();
@@ -126,29 +126,29 @@ public class CacheRepositoryImpl implements CacheRepository {
      * @return the size (in bytes) that this EhCache is using in memory (RAM), or <code>-1</code> if that
      *         number is unknown or cannot be calculated.
      */
-    public long getMemoryUsage() {
-        try {
-            net.sf.ehcache.Cache ehcache = (net.sf.ehcache.Cache) this.getNativeCache();
-            return ehcache.calculateInMemorySize();
-        }
-        catch (Throwable t) {
-            return -1;
-        }
-    }
+//    public long getMemoryUsage() {
+//        try {
+//            org.ehcache.Cache ehcache = (org.ehcache.Cache) this.getNativeCache();
+//            return ehcache.calculateInMemorySize();
+//        }
+//        catch (Throwable t) {
+//            return -1;
+//        }
+//    }
 
     /**
      * Returns the number of elements in the memory store.
      *
      * @return the number of elements in the memory store.
      */
-    public long getMemoryStoreSize() {
-        try {
-            net.sf.ehcache.Cache ehcache = (net.sf.ehcache.Cache) this.getNativeCache();
-            return ehcache.getMemoryStoreSize();
-        }
-        catch (Throwable t) {
-            throw new CacheException(t);
-        }
-    }
+//    public long getMemoryStoreSize() {
+//        try {
+//            org.ehcache.Cache ehcache = (org.ehcache.Cache) this.getNativeCache();
+//            return ehcache.getMemoryStoreSize();
+//        }
+//        catch (Throwable t) {
+//            throw new CacheException(t);
+//        }
+//    }
 
 }
