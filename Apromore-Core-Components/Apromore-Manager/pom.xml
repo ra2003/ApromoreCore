@@ -88,6 +88,7 @@
                         </Import-Bundle>
                         <Import-Package>
                             org.deckfour.xes.*;version="2.27",
+                            org.ehcache.*,
                             com.mysql.jdbc,
                             javax.sql,
                             org.apromore.plugin.provider,
@@ -664,11 +665,11 @@
             <!--<artifactId>ehcache</artifactId>-->
             <!--<version>2.10.6</version>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.apromore</groupId>-->
-            <!--<artifactId>ehcache-virgo</artifactId>-->
-            <!--<version>3.8.1</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.apromore</groupId>
+            <artifactId>ehcache-virgo</artifactId>
+            <version>3.8.1</version>
+        </dependency>
 
         <!-- ehcache 2.x osgi bundle -->
         <!--<dependency>-->
@@ -677,11 +678,11 @@
             <!--<version>2.6.11_1</version>-->
         <!--</dependency>-->
 
-        <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>3.8.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.ehcache</groupId>-->
+            <!--<artifactId>ehcache</artifactId>-->
+            <!--<version>3.8.1</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.xerial.snappy</groupId>

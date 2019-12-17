@@ -28,8 +28,7 @@ import static org.ehcache.config.builders.CacheManagerBuilder.newCacheManager;
  * <p/>
  * This class can {@link #setCacheManager(org.ehcache.CacheManager) accept} a manually configured
  * {@link org.ehcache.CacheManager org.ehcache.CacheManager} instance,
- * or an {@code ehcache.xml} path location can be specified instead and one will be constructed. If neither are
- * specified, Apromore's failsafe <code><a href="./ehcache.xml">ehcache.xml</a></code> file will be used by default.
+ * or an {@code ehcache.xml} path location can be specified instead and one will be constructed.
  */
 public class EhCacheManager implements CacheManager, Initializable, Destroyable {
 
@@ -38,6 +37,9 @@ public class EhCacheManager implements CacheManager, Initializable, Destroyable 
     private volatile org.ehcache.CacheManager manager;
 
     private volatile String cacheManagerConfigFile = "/ehcache.xml";
+
+    public static final String CACHE_ALIAS_XLOG = "xlog";
+
     private volatile boolean cacheManagerImplicitlyCreated = false;
 
     private volatile XmlConfiguration cacheConfiguration = null;
@@ -96,13 +98,7 @@ public class EhCacheManager implements CacheManager, Initializable, Destroyable 
                     "defaultCacheConfiguration", Object.class, Object.class);
             CacheConfiguration<Object, Object> cacheConfiguration = configurationBuilder.build();
             return ensureCacheManager().createCache(name, cacheConfiguration);
-        } catch (InstantiationException e) {
-            throw new CacheException(e);
-        } catch (IllegalAccessException e) {
-            throw new CacheException(e);
-        } catch (ClassNotFoundException e) {
-            throw new CacheException(e);
-        } catch (MalformedURLException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | MalformedURLException e) {
             throw new CacheException(e);
         }
     }

@@ -15,8 +15,8 @@
     </ehcache:cache>
 
     <ehcache:cache alias="xlog">
-        <ehcache:key-type>java.lang.Long</ehcache:key-type>
-        <ehcache:value-type>org.deckfour.xes.model.XLog</ehcache:value-type>
+        <ehcache:key-type>java.lang.Object</ehcache:key-type>
+        <ehcache:value-type>java.lang.Object</ehcache:value-type>
         <ehcache:resources>
             <ehcache:heap unit="entries">100</ehcache:heap>
             <!--<ehcache:offheap unit="MB">1</ehcache:offheap>-->

@@ -11,7 +11,7 @@ public class EhCacheManagerTest {
         EhCacheManager cacheManager = new EhCacheManager();
 
         try {
-            Cache<Object, Object> someCache = cacheManager.getCache("someCache");
+            Cache<String, Object> someCache = cacheManager.getCache("xlog");
             Assert.assertNotNull(someCache);
 
             final String key = "key";

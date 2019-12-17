@@ -26,6 +26,8 @@ package org.apromore.dao.jpa;
 import org.apromore.apmlog.APMLog;
 import org.apromore.apmlog.APMLogService;
 import org.apromore.apmlog.impl.APMLogServiceImpl;
+import org.apromore.cache.Cache;
+import org.apromore.cache.ehcache.EhCacheManager;
 import org.apromore.dao.CacheRepository;
 import org.apromore.dao.LogRepositoryCustom;
 import org.apromore.dao.model.Log;
@@ -73,8 +75,13 @@ public class LogRepositoryCustomImpl implements LogRepositoryCustom {
     /**
      * Inject the CacheRepository instance
      */
-    @Resource
-    private CacheRepository cacheRepo;
+
+//    @Resource
+    private EhCacheManager ehCacheCacheManager = new EhCacheManager();
+    Cache<Object, Object>  cacheRepo = ehCacheCacheManager.getCache(EhCacheManager.CACHE_ALIAS_XLOG);
+
+//    @Resource
+//    private CacheRepository cacheRepo;
 
     @Resource
     private APMLogService apmLogService;
@@ -139,11 +146,12 @@ public class LogRepositoryCustomImpl implements LogRepositoryCustom {
                 exportToFile("../Event-Logs-Repository/", name, log);
 
                 // Store corresponding object into cache
+//                Cache<String, Object>  cacheRepo = ehCacheCacheManager.getCache(EhCacheManager.CACHE_ALIAS_XLOG);
                 cacheRepo.put(logNameId, log);
                 cacheRepo.put(logNameId + APMLOG_CACHE_KEY_SUFFIX, apmLogService.findAPMLogForXLog(log));
-                LOGGER.info("Put XLog [hash: " + log.hashCode() + "] into Cache [" + cacheRepo.getCacheName() + "] " +
+                LOGGER.info("Put XLog [hash: " + log.hashCode() + "] into Cache [" + EhCacheManager.CACHE_ALIAS_XLOG + "] " +
                         "using Key [" + logNameId + "]. ");
-                LOGGER.info("Put APMLog [hash: " + log.hashCode() + "] into Cache [" + cacheRepo.getCacheName() + "] " +
+                LOGGER.info("Put APMLog [hash: " + log.hashCode() + "] into Cache [" + EhCacheManager.CACHE_ALIAS_XLOG + "] " +
                         "using Key [" + logNameId + "APMLog]. ");
 //                LOGGER.info("The size that EhCache is using in memory   = " + cacheRepo.getMemoryUsage() / 1024 / 1024 + " MB ");
 //                LOGGER.info("The number of elements in the memory store = " + cacheRepo.getMemoryStoreSize());
@@ -165,9 +173,10 @@ public class LogRepositoryCustomImpl implements LogRepositoryCustom {
 
                 // Remove corresponding object from cache
                 String key = log.getFilePath();
-                cacheRepo.evict(key);
-                cacheRepo.evict(key + APMLOG_CACHE_KEY_SUFFIX);
-                LOGGER.info("Delete XLog [ KEY: " + key + "] from cache [" + cacheRepo.getCacheName() + "]");
+//                Cache<String, Object> cacheRepo = ehCacheCacheManager.getCache(EhCacheManager.CACHE_ALIAS_XLOG);
+                cacheRepo.remove(key);
+                cacheRepo.remove(key + APMLOG_CACHE_KEY_SUFFIX);
+                LOGGER.info("Delete XLog [ KEY: " + key + "] from cache [" + EhCacheManager.CACHE_ALIAS_XLOG + "]");
 
             } catch (Exception e) {
                 LOGGER.error("Error " + e.getMessage());
@@ -189,6 +198,7 @@ public class LogRepositoryCustomImpl implements LogRepositoryCustom {
             long elapsedNanos;
             // *******  profiling code end here ********
 
+//            Cache<String, Object>  cacheRepo = ehCacheCacheManager.getCache(EhCacheManager.CACHE_ALIAS_XLOG);
             String key = log.getFilePath();
             XLog element = (XLog) cacheRepo.get(key);
 
@@ -229,7 +239,7 @@ public class LogRepositoryCustomImpl implements LogRepositoryCustom {
 
             } else {
                 // If cache hit
-                LOGGER.info("Got object [HASH: " + element.hashCode() + " KEY:" + key + "] from cache [" + cacheRepo.getCacheName() + "]");
+                LOGGER.info("Got object [HASH: " + element.hashCode() + " KEY:" + key + "] from cache [" + EhCacheManager.CACHE_ALIAS_XLOG + "]");
                 return element;
             }
         }
@@ -249,6 +259,7 @@ public class LogRepositoryCustomImpl implements LogRepositoryCustom {
             long elapsedNanos;
             // *******  profiling code end here ********
 
+//            Cache<String, Object>  cacheRepo = ehCacheCacheManager.getCache(EhCacheManager.CACHE_ALIAS_XLOG);
             String key = log.getFilePath() + APMLOG_CACHE_KEY_SUFFIX;
             APMLog element = (APMLog) cacheRepo.get(key);
 
@@ -276,7 +287,7 @@ public class LogRepositoryCustomImpl implements LogRepositoryCustom {
 
             } else {
                 // If cache hit
-                LOGGER.info("Get object [HASH: " + element.hashCode() + " KEY:" + key + "] from cache [" + cacheRepo.getCacheName() + "]");
+                LOGGER.info("Get object [HASH: " + element.hashCode() + " KEY:" + key + "] from cache [" + EhCacheManager.CACHE_ALIAS_XLOG + "]");
                 return element;
             }
         }

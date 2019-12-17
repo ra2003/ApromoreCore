@@ -209,6 +209,7 @@ then
             -Declipse.ignoreApp=true \
             -Dosgi.install.area=$KERNEL_HOME \
             -Dosgi.configuration.area=$CONFIG_AREA \
+            -Dorg.ehcache.core.osgi=false \
             -Dssh.server.keystore="$CONFIG_DIR/hostkey.ser" \
             -Dosgi.frameworkClassPath=$FWCLASSPATH \
             -Djava.endorsed.dirs="$KERNEL_HOME/lib/endorsed" \

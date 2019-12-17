@@ -50,14 +50,15 @@
                         <Import-Package>
                             !sun.nio.ch,
                             org.deckfour.xes.*;version="2.27",
+                            <!--org.ehcache.core.*,-->
                             *
                         </Import-Package>
                         <Export-Package>
                             org.apromore.xlog.singletonlog,
                             org.deckfour.spex.*;version="1.0",
                             org.deckfour.xes.*;version="2.27",
-                            org.xeslite.*;version="0.0.1",
-                            org.ehcache.*
+                            org.xeslite.*;version="0.0.1"
+                            <!--org.ehcache.core.*-->
                         </Export-Package>
                     </instructions>
                 </configuration>
@@ -81,11 +82,11 @@
             <artifactId>openxes</artifactId>
             <version>2.27</version>
         </dependency>
-        <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>3.8.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.ehcache</groupId>-->
+            <!--<artifactId>ehcache</artifactId>-->
+            <!--<version>3.8.1</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.deckfour</groupId>
             <artifactId>spex</artifactId>
