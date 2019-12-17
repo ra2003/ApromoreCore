@@ -1,26 +1,19 @@
 package org.apromore.service.csvimporter;
 
 import java.util.List;
+import org.deckfour.xes.model.XLog;
 
-public class LogModel {
+public interface LogModel {
 
-    private List<LogEventModel> rows;
-    private long lineCount;
-    private long errorCount;
-    private List<String> invalidRows;
+    List<LogEventModel> getRows();
 
-    public LogModel(List<LogEventModel> rows, long lineCount, long errorCount, List<String> invalidRows) {
-        this.rows        = rows;
-        this.lineCount   = lineCount;
-        this.errorCount  = errorCount;
-        this.invalidRows = invalidRows;
-    }
+    long getLineCount();
 
-    public List<LogEventModel> getRows() { return rows; }
+    long getErrorCount();
 
-    public long getLineCount() { return lineCount; }
+    List<String> getInvalidRows();
 
-    public long getErrorCount() { return errorCount; }
+    boolean getErrorCheck();
 
-    public List<String> getInvalidRows() { return invalidRows; }
+    XLog getXLog();
 }
