@@ -5,6 +5,9 @@
         xmlns:ehcache='http://www.ehcache.org/v3'
         xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.8.xsd">
 
+    <!-- Disk cache path -->
+    <ehcache:persistence directory="java.io.tmpdir/ehcache"/>
+
     <ehcache:cache alias="test">
         <ehcache:key-type>java.lang.Long</ehcache:key-type>
         <ehcache:value-type>java.lang.String</ehcache:value-type>
@@ -15,13 +18,24 @@
     </ehcache:cache>
 
     <ehcache:cache alias="xlog">
-        <ehcache:key-type>java.lang.Object</ehcache:key-type>
-        <ehcache:value-type>java.lang.Object</ehcache:value-type>
+        <ehcache:key-type serializer="org.ehcache.impl.serialization.CompactJavaSerializer">java.lang.Object</ehcache:key-type>
+        <ehcache:value-type serializer="org.apromore.cache.ehcache.PersistentXLogKryoSerializer">java.lang.Object</ehcache:value-type>
         <ehcache:resources>
-            <ehcache:heap unit="entries">100</ehcache:heap>
-            <!--<ehcache:offheap unit="MB">1</ehcache:offheap>-->
+            <ehcache:heap unit="entries">1</ehcache:heap>
+            <ehcache:offheap unit="GB">1</ehcache:offheap>
+            <ehcache:disk unit="GB" persistent="true">10</ehcache:disk>
         </ehcache:resources>
     </ehcache:cache>
+
+    <!--<ehcache:cache alias="apmlog">-->
+        <!--<ehcache:key-type serializer="org.ehcache.impl.serialization.CompactJavaSerializer">java.lang.Object</ehcache:key-type>-->
+        <!--<ehcache:value-type serializer="org.ehcache.impl.serialization.CompactJavaSerializer">java.lang.Object</ehcache:value-type>-->
+        <!--<ehcache:resources>-->
+            <!--<ehcache:heap unit="entries">100</ehcache:heap>-->
+            <!--<ehcache:offheap unit="GB">1</ehcache:offheap>-->
+            <!--<ehcache:disk unit="GB" persistent="true">10</ehcache:disk>-->
+        <!--</ehcache:resources>-->
+    <!--</ehcache:cache>-->
 
     <ehcache:cache-template name="defaultCacheConfiguration">
         <ehcache:expiry>

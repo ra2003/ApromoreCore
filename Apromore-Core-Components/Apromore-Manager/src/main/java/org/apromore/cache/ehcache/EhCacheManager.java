@@ -39,6 +39,7 @@ public class EhCacheManager implements CacheManager, Initializable, Destroyable 
     private volatile String cacheManagerConfigFile = "/ehcache.xml";
 
     public static final String CACHE_ALIAS_XLOG = "xlog";
+    public static final String CACHE_ALIAS_APMLOG = "apmlog";
 
     private volatile boolean cacheManagerImplicitlyCreated = false;
 
