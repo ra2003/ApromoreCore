@@ -54,9 +54,9 @@ class LogSampleImpl implements LogSample, Constants {
         // Choose the first non-header line to use for all our format-sniffing
         List<String> sampleLine = lines.get(0);
 
-        if (sampleLine.size() != header.size()) {
-            throw new InvalidCSVException("Number of columns in the header does not match number of columns in the data");
-        }
+//        if (sampleLine.size() != header.size()) {
+//            throw new InvalidCSVException("Number of columns in the header does not match number of columns in the data");
+//        }
 
         // Empty header permutation map (heads)
         heads = new HashMap<>();
@@ -164,6 +164,9 @@ class LogSampleImpl implements LogSample, Constants {
                     }
                     if (getPos(timestampValues, getHeader().get(j).toLowerCase())) {
                         // if its timestamp field
+
+
+                        //TODO this needs to use determineFormatForArray method from Parse.java
                         String format = parse.determineDateFormat((newLine.get(j))); // dd.MM.yyyy //MM.dd.yyyy
                         Timestamp validTS = Parse.parseTimestamp(newLine.get(j), format);
                         if (validTS != null) {
