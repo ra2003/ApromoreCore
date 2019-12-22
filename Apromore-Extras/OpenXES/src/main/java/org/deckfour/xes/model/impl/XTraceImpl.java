@@ -71,7 +71,9 @@ public class XTraceImpl extends ArrayList<XEvent> implements XTrace {
 	 */
 	private XAttributeMap attributes;
 
-	public XTraceImpl() {}
+	public XTraceImpl() {
+		this.attributes = new XAttributeMapImpl();
+	}
 
 	/**
 	 * Creates a new trace.

@@ -6,6 +6,8 @@ import com.esotericsoftware.kryo.io.ByteBufferInputStream;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 //import de.javakaffee.kryoserializers.UUIDSerializer;
+import com.esotericsoftware.kryo.pool.KryoPool;
+import com.esotericsoftware.kryo.serializers.VersionFieldSerializer;
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.extension.std.XLifecycleExtension;
 import org.deckfour.xes.model.XLog;
@@ -24,26 +26,40 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
 
 //    private final Serializer<XLog> serializer;
 
-    protected static final Kryo kryo = new Kryo();
+    private static final ThreadLocal<Kryo> kryoLocal = new ThreadLocal<Kryo>() {
+        protected Kryo initialValue() {
+            Kryo kryo = new Kryo();
+            kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(
+                    new StdInstantiatorStrategy()));
+            return kryo;
+        };
+    };
 
-    public EhcacheXLogSerializer(ClassLoader classLoader) {
+    private static Kryo createKryo(boolean isObjectSerializer) {
+        Kryo kryo = new Kryo();
+        // handle classes with missing default constructors
+//        kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
+        // supports addition of fields if the @since annotation is used
+        kryo.setDefaultSerializer(VersionFieldSerializer.class);
 
-    }
+        if (!isObjectSerializer) {
+            // For performance reasons, and to avoid memory use, assume documents do not
+            // require object graph serialization with duplicate or recursive references
+            kryo.setReferences(false);
+        } else {
+            // To avoid monotonic increase of memory use, due to reference tracking, we must
+            // reset after each use.
+            kryo.setAutoReset(true);
+        }
 
-    @Override
-    public ByteBuffer serialize(XLog object) throws SerializerException {
         kryo.setWarnUnregisteredClasses(true);
 
         kryo.register(org.eclipse.collections.impl.set.mutable.UnifiedSet.class);
         kryo.register(UUID.class, new UUIDSerializer());
-//        kryo.register(XAttributeMap.class);
         kryo.register(XAttributeMapImpl.class);
-//        kryo.register(XAttributeMap.class, new XAttributeMapSerializer());
-//        kryo.register(XAttributeMapImpl.class, new XAttributeMapSerializer());
-//        kryo.register(XAttributeMapLazyImpl.class, new XAttributeMapSerializer());
+        kryo.register(XAttributeMapLazyImpl.class);
         kryo.register(java.net.URI.class);
         kryo.register(java.util.Date.class);
-
         kryo.register(XLogImpl.class);
         kryo.register(XTraceImpl.class);
         kryo.register(XEventImpl.class);
@@ -53,8 +69,6 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
         kryo.register(org.eclipse.collections.impl.set.mutable.UnifiedSet.class);
         kryo.register(XLifecycleExtension.class);
         kryo.register(org.deckfour.xes.id.XID.class);
-
-
         kryo.register(XLogImpl.class);
         kryo.register(XTraceImpl.class);
         kryo.register(XEventImpl.class);
@@ -70,16 +84,24 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
         kryo.register(XsDateTimeFormat.class);
         kryo.register(XExtension.class);
         kryo.register(XLifecycleExtension.class);
-
         kryo.register(org.deckfour.xes.extension.std.XConceptExtension.class);
         kryo.register(org.deckfour.xes.extension.std.XTimeExtension.class);
-
         kryo.register(org.deckfour.xes.extension.std.XIdentityExtension.class);
 
 
-        kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
+        return kryo;
+    }
 
-//        Output output = new Output( new ByteArrayOutputStream(), 1024 * 1024 * 1024 * 1);
+
+
+    public EhcacheXLogSerializer(ClassLoader classLoader) {
+
+    }
+
+    @Override
+    public ByteBuffer serialize(XLog object) throws SerializerException {
+
+        Kryo kryo = createKryo(true);
 
         ByteArrayOutputStream byteArrayOutputStream =
                 new ByteArrayOutputStream();
@@ -110,47 +132,7 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
     @Override
     public XLog read(ByteBuffer byteBuffer) throws SerializerException, ClassNotFoundException {
 
-        kryo.setWarnUnregisteredClasses(true);
-        kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
-
-        // Register XLog model classes
-        kryo.register(org.eclipse.collections.impl.set.mutable.UnifiedSet.class);
-        kryo.register(UUID.class, new UUIDSerializer());
-        kryo.register(XAttributeMapImpl.class);
-        kryo.register(java.net.URI.class);
-        kryo.register(java.util.Date.class);
-
-        kryo.register(XLogImpl.class);
-        kryo.register(XTraceImpl.class);
-        kryo.register(XEventImpl.class);
-        kryo.register(XAttributeContinuousImpl.class);
-        kryo.register(XAttributeLiteralImpl.class);
-        kryo.register(org.deckfour.xes.extension.std.XOrganizationalExtension.class);
-        kryo.register(org.eclipse.collections.impl.set.mutable.UnifiedSet.class);
-        kryo.register(XLifecycleExtension.class);
-        kryo.register(org.deckfour.xes.id.XID.class);
-
-
-        kryo.register(XLogImpl.class);
-        kryo.register(XTraceImpl.class);
-        kryo.register(XEventImpl.class);
-        kryo.register(XAttributeBooleanImpl.class);
-        kryo.register(XAttributeCollectionImpl.class);
-        kryo.register(XAttributeContainerImpl.class);
-        kryo.register(XAttributeDiscreteImpl.class);
-        kryo.register(XAttributeIDImpl.class);
-        kryo.register(XAttributeListImpl.class);
-        kryo.register(XAttributeLiteralImpl.class);
-        kryo.register(XAttributeTimestampImpl.class);
-        kryo.register(XAttributeImpl.class);
-        kryo.register(XsDateTimeFormat.class);
-        kryo.register(XExtension.class);
-        kryo.register(XLifecycleExtension.class);
-
-        kryo.register(org.deckfour.xes.extension.std.XConceptExtension.class);
-        kryo.register(org.deckfour.xes.extension.std.XTimeExtension.class);
-
-        kryo.register(org.deckfour.xes.extension.std.XIdentityExtension.class);
+        Kryo kryo = createKryo(true);
 
         //compression off
         Input input =  new Input(new ByteBufferInputStream(byteBuffer)) ;

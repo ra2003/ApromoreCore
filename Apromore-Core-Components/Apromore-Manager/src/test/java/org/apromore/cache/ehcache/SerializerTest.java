@@ -23,6 +23,7 @@ import org.ehcache.core.statistics.DefaultStatisticsService;
 import org.ehcache.impl.config.persistence.CacheManagerPersistenceConfiguration;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xeslite.external.XFactoryExternalStore;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,7 +37,7 @@ import static org.junit.Assert.assertThat;
 
 public class SerializerTest {
 
-    private static final String PERSISTENCE_PATH = "C:\\Users\\frank\\Downloads\\terracotta\\";
+    private static final String PERSISTENCE_PATH = "/Users/frank/terracotta";
 
     @Test
     @Ignore
@@ -220,6 +221,11 @@ public class SerializerTest {
         List<XLog> parsedLog = null;
         XLog xLog;
         APMLog apmLog;
+
+        // Test XESLite factory
+//        XFactoryExternalStore.InMemoryStoreImpl factory = new XFactoryExternalStore.InMemoryStoreImpl();
+//        XFactoryRegistry.instance().setCurrentDefault(factory);
+
         XFactory factory = XFactoryRegistry.instance().currentDefault();
         XesXmlParser parser = new XesXmlParser(factory);
         try {

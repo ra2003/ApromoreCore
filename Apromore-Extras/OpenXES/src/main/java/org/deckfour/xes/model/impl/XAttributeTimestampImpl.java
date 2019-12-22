@@ -62,6 +62,10 @@ public class XAttributeTimestampImpl extends XAttributeImpl implements
 	 */
 	private Date value;
 
+	public XAttributeTimestampImpl() {
+		this("", new Date(), null);
+	}
+
 	/**
 	 * Creates a new instance.
 	 * 

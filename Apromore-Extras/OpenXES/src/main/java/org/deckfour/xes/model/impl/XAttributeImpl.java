@@ -128,8 +128,9 @@ public abstract class XAttributeImpl implements XAttribute  {
 	public XAttributeMap getAttributes() {
 		// This is not thread-safe, but we don't give any thread safety guarantee anyway
 		if (attributes == null) {
-			this.attributes = new XAttributeMapLazyImpl<XAttributeMapImpl>(
-					XAttributeMapImpl.class); // uses lazy implementation by default
+			this.attributes = new XAttributeMapImpl();
+//			this.attributes = new XAttributeMapLazyImpl<XAttributeMapImpl>(
+//					XAttributeMapImpl.class); // uses lazy implementation by default
 		}
 		return attributes;
 	}

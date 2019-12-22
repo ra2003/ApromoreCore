@@ -127,12 +127,7 @@ public class XLogImpl extends ArrayList<XTrace> implements XLog {
 	}
 
 	public XLogImpl() {
-		this.extensions = new UnifiedSet<XExtension>();
-		this.classifiers = new ArrayList<XEventClassifier>();
-		this.globalTraceAttributes = new ArrayList<XAttribute>();
-		this.globalEventAttributes = new ArrayList<XAttribute>();
-		this.cachedClassifier = null;
-		this.cachedInfo = null;
+		this(new XAttributeMapImpl());
 	}
 
 	/* (non-Javadoc)
