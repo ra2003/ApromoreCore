@@ -2,6 +2,7 @@ package org.apromore.cache.ehcache;
 
 import org.apromore.cache.Cache;
 import org.deckfour.xes.model.XLog;
+import org.deckfour.xes.model.impl.XAttributeMapImpl;
 import org.deckfour.xes.model.impl.XLogImpl;
 import org.ehcache.CacheManager;
 import org.ehcache.config.CacheConfiguration;
@@ -45,7 +46,7 @@ public class EhCacheManagerTest {
 
             final Long key = 1L;
 //            final String value = "value";
-            final XLog value = new XLogImpl();
+            final XLog value = new XLogImpl(new XAttributeMapImpl());
             xLogCache.put(key, value);
 //            Assert.assertNull(xLogCache.put(key, value));
             Assert.assertEquals(value, xLogCache.get(key));

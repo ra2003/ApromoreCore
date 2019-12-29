@@ -4,6 +4,7 @@ import org.apromore.apmlog.APMLog;
 import org.apromore.cache.ehcache.model.Description;
 import org.apromore.cache.ehcache.model.Employee;
 import org.deckfour.xes.factory.XFactory;
+import org.deckfour.xes.factory.XFactoryBufferedImpl;
 import org.deckfour.xes.factory.XFactoryRegistry;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
@@ -224,6 +225,7 @@ public class SerializerTest {
 
         // Test XESLite factory
 //        XFactoryExternalStore.InMemoryStoreImpl factory = new XFactoryExternalStore.InMemoryStoreImpl();
+//        XFactoryBufferedImpl factory = new XFactoryBufferedImpl();
 //        XFactoryRegistry.instance().setCurrentDefault(factory);
 
         XFactory factory = XFactoryRegistry.instance().currentDefault();

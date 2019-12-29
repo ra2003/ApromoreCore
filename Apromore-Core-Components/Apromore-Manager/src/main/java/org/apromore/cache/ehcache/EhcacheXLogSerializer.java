@@ -10,6 +10,7 @@ import com.esotericsoftware.kryo.pool.KryoPool;
 import com.esotericsoftware.kryo.serializers.VersionFieldSerializer;
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.extension.std.XLifecycleExtension;
+import org.deckfour.xes.model.XElement;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.impl.*;
 import org.ehcache.spi.serialization.Serializer;
@@ -38,7 +39,7 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
     private static Kryo createKryo(boolean isObjectSerializer) {
         Kryo kryo = new Kryo();
         // handle classes with missing default constructors
-//        kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
+        kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
         // supports addition of fields if the @since annotation is used
         kryo.setDefaultSerializer(VersionFieldSerializer.class);
 
@@ -63,6 +64,7 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
         kryo.register(XLogImpl.class);
         kryo.register(XTraceImpl.class);
         kryo.register(XEventImpl.class);
+        kryo.register(XElement.class);
         kryo.register(XAttributeContinuousImpl.class);
         kryo.register(XAttributeLiteralImpl.class);
         kryo.register(org.deckfour.xes.extension.std.XOrganizationalExtension.class);
@@ -88,6 +90,17 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
         kryo.register(org.deckfour.xes.extension.std.XTimeExtension.class);
         kryo.register(org.deckfour.xes.extension.std.XIdentityExtension.class);
 
+        // XESLite
+        kryo.register(java.util.concurrent.atomic.AtomicLong.class);
+        kryo.register(java.util.concurrent.atomic.AtomicInteger.class);
+        kryo.register(org.cliffc.high_scale_lib.NonBlockingHashMap.class);
+        kryo.register(org.cliffc.high_scale_lib.NonBlockingHashMapLong.class);
+        kryo.register(java.lang.Class.class);
+        kryo.register(org.deckfour.xes.model.XAttributeDiscrete.class);
+        kryo.register(Object.class);
+        kryo.register(byte[].class);
+
+        kryo.register(org.deckfour.xes.model.buffered.XTraceBufferedImpl.class);
 
         return kryo;
     }
