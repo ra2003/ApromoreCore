@@ -58,11 +58,6 @@ public abstract class XAttributeCollectionImpl extends XAttributeLiteralImpl
 
 	protected Collection<XAttribute> collection;
 
-	public XAttributeCollectionImpl() {
-		this("", null);
-	}
-
-
 	/**
 	 * @param key
 	 */

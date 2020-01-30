@@ -141,7 +141,7 @@ public class XFactoryNaiveImpl implements XFactory {
 	 * @see org.deckfour.xes.model.factory.XModelFactory#createLog()
 	 */
 	public XLog createLog() {
-		return new XLogImpl(new XAttributeMapImpl());
+		return new XLogImpl(new XAttributeMapLazyImpl<XAttributeMapImpl>(XAttributeMapImpl.class));
 	}
 
 	/* (non-Javadoc)
@@ -155,7 +155,7 @@ public class XFactoryNaiveImpl implements XFactory {
 	 * @see org.deckfour.xes.model.factory.XModelFactory#createTrace()
 	 */
 	public XTrace createTrace() {
-		return new XTraceImpl(new XAttributeMapImpl());
+		return new XTraceImpl(new XAttributeMapLazyImpl<XAttributeMapImpl>(XAttributeMapImpl.class));
 	}
 	
 	/* (non-Javadoc)

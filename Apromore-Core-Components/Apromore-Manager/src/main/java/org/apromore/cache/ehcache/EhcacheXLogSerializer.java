@@ -10,8 +10,7 @@ import com.esotericsoftware.kryo.pool.KryoPool;
 import com.esotericsoftware.kryo.serializers.VersionFieldSerializer;
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.extension.std.XLifecycleExtension;
-import org.deckfour.xes.model.XElement;
-import org.deckfour.xes.model.XLog;
+import org.deckfour.xes.model.*;
 import org.deckfour.xes.model.impl.*;
 import org.ehcache.spi.serialization.Serializer;
 import org.ehcache.spi.serialization.SerializerException;
@@ -62,7 +61,7 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
         kryo.register(java.net.URI.class);
         kryo.register(java.util.Date.class);
         kryo.register(XLogImpl.class);
-        kryo.register(XTraceImpl.class);
+        kryo.register(XTraceImpl.class, new EhcacheXTraceSerializer());
         kryo.register(XEventImpl.class);
         kryo.register(XElement.class);
         kryo.register(XAttributeContinuousImpl.class);
@@ -89,6 +88,8 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
         kryo.register(org.deckfour.xes.extension.std.XConceptExtension.class);
         kryo.register(org.deckfour.xes.extension.std.XTimeExtension.class);
         kryo.register(org.deckfour.xes.extension.std.XIdentityExtension.class);
+        kryo.register(XAttributable.class);
+        kryo.register(java.util.HashSet.class);
 
         // XESLite
         kryo.register(java.util.concurrent.atomic.AtomicLong.class);
@@ -122,7 +123,12 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
 //                new DeflaterOutputStream(byteArrayOutputStream);
         Output output = new Output(byteArrayOutputStream);
 
-        kryo.writeObject(output, object);
+        kryo.writeObject(output, object.getAttributes());
+        output.writeInt(object.size(), true);
+        for(XTrace xTrace : object){
+            kryo.writeObject(output, xTrace);
+        }
+//        kryo.writeObject(output, object);
         System.out.println("**************** Kryo serialisation size: " + output.toBytes().length);
 //        output.flush();
         output.close();
@@ -149,7 +155,15 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
 
         //compression off
         Input input =  new Input(new ByteBufferInputStream(byteBuffer)) ;
-        return kryo.readObject(input, XLogImpl.class);
+
+        XAttributeMap attributeMap = kryo.readObject(input, XAttributeMapImpl.class);
+        final int size = input.readInt(true);
+        final XLog xLog = new XLogImpl(attributeMap);
+        for (int i = 0; i < size; ++i) {
+            xLog.add(i, kryo.readObject(input, XTraceImpl.class));
+        }
+
+        return xLog;
 
         // compression on
 //        byte[] bytes = new byte[byteBuffer.remaining()];

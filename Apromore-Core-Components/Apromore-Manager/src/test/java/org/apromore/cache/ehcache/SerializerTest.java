@@ -234,6 +234,8 @@ public class SerializerTest {
             String mainPath = Paths.get(ClassLoader.getSystemResource("XES_logs").toURI()).toString();
             Path lgPath =  Paths.get(mainPath ,"SepsisCases.xes.gz");
             parsedLog = parser.parse(new GZIPInputStream(new FileInputStream(lgPath.toFile())));
+//            Path lgPath =  Paths.get(mainPath ,"SepsisCases.xes");
+//            parsedLog = parser.parse(new FileInputStream(lgPath.toFile()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -256,8 +258,8 @@ public class SerializerTest {
         XLog newEmp = xLogCache.get(1L);
         assertThat(newEmp, is(xLog));
 
-        APMLog newAPM = apmLogCache.get(1L);
-        assertThat(newAPM.getTraceList().size(), is(apmLog.getTraceList().size()));
+//        APMLog newAPM = apmLogCache.get(1L);
+//        assertThat(newAPM.getTraceList().size(), is(apmLog.getTraceList().size()));
 
         cacheManager.close();
         cacheManager.init();
