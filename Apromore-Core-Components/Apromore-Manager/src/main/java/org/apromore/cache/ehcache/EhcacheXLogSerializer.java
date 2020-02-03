@@ -91,18 +91,6 @@ public class EhcacheXLogSerializer implements Serializer<XLog> {
         kryo.register(XAttributable.class);
         kryo.register(java.util.HashSet.class);
 
-        // XESLite
-        kryo.register(java.util.concurrent.atomic.AtomicLong.class);
-        kryo.register(java.util.concurrent.atomic.AtomicInteger.class);
-        kryo.register(org.cliffc.high_scale_lib.NonBlockingHashMap.class);
-        kryo.register(org.cliffc.high_scale_lib.NonBlockingHashMapLong.class);
-        kryo.register(java.lang.Class.class);
-        kryo.register(org.deckfour.xes.model.XAttributeDiscrete.class);
-        kryo.register(Object.class);
-        kryo.register(byte[].class);
-
-        kryo.register(org.deckfour.xes.model.buffered.XTraceBufferedImpl.class);
-
         return kryo;
     }
 
