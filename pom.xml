@@ -123,36 +123,23 @@
         <module>Apromore-Custom-Plugins/Log-Filter-Portal-Plugin-Generic</module>
 
         <module>Apromore-Custom-Plugins/Account-Portal-Plugin</module>
+        <module>Apromore-Custom-Plugins/Apromore-Editor/bpmn20xmlbasic</module>
+        <module>Apromore-Custom-Plugins/Apromore-Editor/diagram core</module>
+        <module>Apromore-Custom-Plugins/Apromore-Editor/pdf</module>
         <module>Apromore-Custom-Plugins/BIMP-Annotation-Logic</module>
         <module>Apromore-Custom-Plugins/BIMP-Editor-Plugin</module>
         <module>Apromore-Custom-Plugins/BIMP-Editor-Plugin2</module>
         <module>Apromore-Custom-Plugins/BIMP-Portal-Plugin</module>
-
-
         <module>Apromore-Custom-Plugins/BPMNDiagramImporter-Logic</module>
+<!--
         <module>Apromore-Custom-Plugins/BPMNMiner-Logic</module>
         <module>Apromore-Custom-Plugins/BPMNMiner-Portal-Plugin</module>
-
+-->
         <module>Apromore-Custom-Plugins/CSVImporter-Logic</module>
         <module>Apromore-Custom-Plugins/CSVImporter-Portal</module>
         <module>Apromore-Custom-Plugins/CSVExporter-Logic</module>
         <module>Apromore-Custom-Plugins/CSVExporter-Portal</module>
-
-        <module>Apromore-Custom-Plugins/LTL-Conf-Logic</module>
-        <module>Apromore-Custom-Plugins/LTL-Conf-Portal-Plugin</module>
-        <module>Apromore-Custom-Plugins/APM-Logic</module>
-        <module>Apromore-Custom-Plugins/APM-Portal-Plugin</module>
-        <module>Apromore-Custom-Plugins/APM-Compliance-Logic</module>
-        <module>Apromore-Custom-Plugins/APM-Compliance-Portal-Plugin</module>
-        <module>Apromore-Custom-Plugins/APM-Comp-Guards-Logic</module>
-        <module>Apromore-Custom-Plugins/APM-Comp-Guards-Portal-Plugin</module>
-
-        <module>Apromore-Custom-Plugins/IBPStruct-Logic</module>
-        <module>Apromore-Custom-Plugins/IBPStruct-Portal-Plugin</module>
-        <module>Apromore-Custom-Plugins/Activity-Filter-Logic</module>
-        <module>Apromore-Custom-Plugins/Activity-Filter-Portal-Plugin</module>
-        <module>Apromore-Custom-Plugins/Infrequent-Behaviour-Filter-Logic</module>
-        <module>Apromore-Custom-Plugins/Infrequent-Behaviour-Filter-Portal-Plugin</module>
+        
         <module>Apromore-Custom-Plugins/Log-Animation-Logic</module>
         <module>Apromore-Custom-Plugins/Log-Animation-Portal-Plugin</module>
 
@@ -160,8 +147,7 @@
         <module>Apromore-Custom-Plugins/Predictive-Monitor-Portal-Plugin</module>
         <module>Apromore-Custom-Plugins/Predictor-Training-Portal-Plugin</module>
         <!-- <module>Apromore-Custom-Plugins/Similarity-Clusters-Portal-Plugin</module> -->
-        <module>Apromore-Custom-Plugins/Process-Discoverer-Logic</module>
-        <module>Apromore-Custom-Plugins/Process-Discoverer-Portal-Plugin</module>
+        
         <module>Apromore-Custom-Plugins/XES-Selection-Portal-Plugin</module>
         <module>Apromore-Custom-Plugins/Theme-Selection-Portal-Plugin</module>
 
@@ -176,10 +162,8 @@
         <module>Apromore-Core-Components/Apromore-Manager</module>
         <module>Apromore-Core-Components/Apromore-Manager-WS</module>
         <module>Apromore-Core-Components/Apromore-BPMNEditor</module>
-        <module>Apromore-Core-Components/Apromore-Editor</module>
 
         <!-- Assembles the Bundles and repositories -->
-        <module>Apromore-Assembly/Editor-Assembly</module>
         <module>Apromore-Assembly/Manager-Assembly</module>
         <module>Apromore-Assembly/Portal-Assembly</module>
 
@@ -188,7 +172,7 @@
 
         <!-- Command line tools -->
         <module>Apromore-Extras/bpmncmap</module>
-        <!--<module>Supplements/cpfImporter</module>-->
+        <module>Supplements/cpfImporter</module>
         <!--<module>Supplements/bpmn2cpf</module>-->
         <!--<module>Supplements/cpf2bpmn</module>-->
         <!--<module>Supplements/cpf2epml</module>-->
@@ -201,8 +185,6 @@
     </modules>
 
     <properties>
-        <gitPropertiesPath>../git.properties</gitPropertiesPath>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.source.version>1.8</java.source.version>
         <java.target.version>${java.source.version}</java.target.version>
@@ -1694,36 +1676,25 @@
                             <goal>revision</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>validate-the-git-infos</id>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                        <!-- *NOTE*: The default phase of validateRevision is verify, but in case you want to change it, you can do so by adding the phase here -->
-                        <phase>package</phase>
-                    </execution>
                 </executions>
 
                 <configuration>
-                    <!--<excludeProperties>-->
-                    <!--<excludeProperty>git.branch</excludeProperty>-->
-                    <!--<excludeProperty>git.build.*</excludeProperty>-->
-                    <!--<excludeProperty>git.closest.*</excludeProperty>-->
-                    <!--<excludeProperty>git.commit.message.*</excludeProperty>-->
-                    <!--<excludeProperty>git.commit.user.*</excludeProperty>-->
-                    <!--<excludeProperty>git.dirty</excludeProperty>-->
-                    <!--<excludeProperty>git.remote.origin.url</excludeProperty>-->
-                    <!--<excludeProperty>git.tags</excludeProperty>-->
-                    <!--</excludeProperties>-->
                     <includeOnlyProperties>
-                        <includeOnlyProperty>git.commit.id.describe</includeOnlyProperty>
-                        <includeOnlyProperty>git.commit.time</includeOnlyProperty>
+                        <!-- Referenced in portalContext.xml, for use by ConfigBean and thence AboutApromorePlugin -->
+                        <includeOnlyProperty>^git.commit.id.describe$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.commit.time$</includeOnlyProperty>
+
+                        <!-- These properties will appear in each artifact's META-INF/git.properties but aren't required -->
+                        <includeOnlyProperty>^git.branch$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.build.version$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.closest.tag.name$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.commit.id$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.dirty$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.remote.origin.url$</includeOnlyProperty>
                     </includeOnlyProperties>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <generateGitPropertiesFilename>${gitPropertiesPath}</generateGitPropertiesFilename>
-                    <gitDescribe>
-                        <dirty>-DEV</dirty>
-                    </gitDescribe>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/META-INF/git.properties</generateGitPropertiesFilename>
+                    <skipPoms>false</skipPoms>
                 </configuration>
             </plugin>
             <plugin>
